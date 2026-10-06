@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RideHub</title>
+</head>
+<body>
+<h1>RideHub</h1>
+<h2>Bikes you can ride right now</h2>
+<ul id="bike-list"></ul>
+
+<script>
+    async function loadBikes() {
+        const response = await fetch("/api/bikes");
+        const bikes = await response.json();
+
+        const list = document.getElementById("bike-list");
+        list.innerHTML = "";
+
+        bikes
+            .filter(bike => bike.available)
+            .forEach(bike => {
+                const item = document.createElement("li");
+                item.textContent = bike.serialNo + " (" + bike.type + ")";
+                list.appendChild(item);
+            });
+    }
+
+    loadBikes();
+</script>
+</body>
+</html>
